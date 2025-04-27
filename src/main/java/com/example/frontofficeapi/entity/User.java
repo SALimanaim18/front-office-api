@@ -27,13 +27,16 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String name;
 
+
+    //Hana zat star alala salima
+
     @NotBlank(message = "L'email est obligatoire")
     @Email(message = "L'email doit être valide")
     @Column(unique = true, nullable = false)
     private String email;
 
     @NotBlank(message = "Le numéro de téléphone est obligatoire")
-    @Pattern(regexp = "^(\\+212|0)([5-7][0-9]{8})$", message = "Numéro de téléphone marocain invalide")
+    //@Pattern(regexp = "^(\\+212|0)([5-7][0-9]{8})$", message = "Numéro de téléphone marocain invalide")
     @Column(nullable = false)
     private String phone;
 
