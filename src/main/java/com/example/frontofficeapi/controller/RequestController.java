@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping({"/api/demandes"})
-@CrossOrigin(
-        origins = {"http://localhost:3000"}
-)
+
 public class RequestController {
     @Autowired
     private RequestService requestService;
