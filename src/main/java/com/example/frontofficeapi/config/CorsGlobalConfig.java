@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Configuration
 public class CorsGlobalConfig {
 
-    @Value("${cros}") // lit depuis application.properties
+    @Value("${cors.allowed-origin}") // 👈 Correct
     private String allowedOrigin;
 
     @Bean

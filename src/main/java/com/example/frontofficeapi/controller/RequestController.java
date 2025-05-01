@@ -5,12 +5,11 @@
 
 package com.example.frontofficeapi.controller;
 
-import com.example.frontofficeapi.model.Request;
+import com.example.frontofficeapi.entity.Request;
 import com.example.frontofficeapi.service.RequestService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

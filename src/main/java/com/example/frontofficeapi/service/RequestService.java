@@ -5,7 +5,7 @@
 
 package com.example.frontofficeapi.service;
 
-import com.example.frontofficeapi.model.Request;
+import com.example.frontofficeapi.entity.Request;
 import com.example.frontofficeapi.repository.RequestRepository;
 import java.util.List;
 import java.util.Optional;

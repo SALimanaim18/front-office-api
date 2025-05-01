@@ -5,7 +5,7 @@
 
 package com.example.frontofficeapi.repository;
 
-import com.example.frontofficeapi.model.Request;
+import com.example.frontofficeapi.entity.Request;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RequestRepository extends JpaRepository<Request, Long> {

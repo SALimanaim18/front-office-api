@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+	<springProperty scope="context" name="applicationName" source="spring.application.name" defaultValue=""/>
+	<springProperty scope="context" name="product" source="product" defaultValue="" />
+	<springProperty scope="context" name="env" source="spring.profiles.active" defaultValue="default" />
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>
+				[%cyan(%d{yyyy-MM-dd HH:mm:ss.SSS})] [${product}] [%cyan(${applicationName})] [%thread] %highlight(%-5level) [trace: %X{traceId}, span: %X{spanId}] ${PID} [%cyan(%logger{36}) %highlight(%L)] : %msg%n
+			</pattern>
+		</layout>
+	</appender>
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>

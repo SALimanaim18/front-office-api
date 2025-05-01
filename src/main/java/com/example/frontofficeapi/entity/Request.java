@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package com.example.frontofficeapi.model;
+package com.example.frontofficeapi.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
