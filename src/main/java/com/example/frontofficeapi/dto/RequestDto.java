@@ -1,11 +1,19 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.example.frontofficeapi.dto;
 
-public class RequestDto {
-    public RequestDto() {
-    }
+import lombok.*;
+import java.io.Serializable;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class RequestDto implements Serializable {
+    private Long id;
+    private String bloodType;
+    private String transfusionCenter;
+    private String city;
+    private String urgencyLevel;
+    private String description;
+    private String userName;
 }

@@ -4,6 +4,8 @@ package com.example.frontofficeapi.auth;
 
 import lombok.*;
 
+import java.util.Date;
+
 
 @Builder
 @Getter
@@ -11,8 +13,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegistreRequest {
-    private String name;
+    private String firstName;
+    private String lastName;
     private String email;
-    private String password;
+    private Date birthDate;
     private String phone;
+    private String city;
+    private String password;
 }

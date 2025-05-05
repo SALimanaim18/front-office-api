@@ -3,11 +3,15 @@ package com.example.frontofficeapi.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -16,41 +20,60 @@ import java.util.List;
 @Setter
 @Builder
 @Entity
-@Table(name="users")
+@Table(name = "users")
+@EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", sequenceName = "USER_SEQ", allocationSize = 1)
     private Long id;
 
-    @NotBlank(message = "Le nom est obligatoire")
-    @Size(min = 2, max = 50, message = "Le nom doit contenir entre 2 et 50 caractères")
-    @Column(nullable = false)
-    private String name;
+    @NotBlank(message = "First name is required")
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
 
+    @NotBlank(message = "Last name is required")
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
-    //Hana zat star alala salima
-
-    @NotBlank(message = "L'email est obligatoire")
-    @Email(message = "L'email doit être valide")
-    @Column(unique = true, nullable = false)
+    @NotBlank(message = "Email is required")
+    @Email(message = "Must be a valid email address")
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @NotBlank(message = "Le numéro de téléphone est obligatoire")
-    //@Pattern(regexp = "^(\\+212|0)([5-7][0-9]{8})$", message = "Numéro de téléphone marocain invalide")
-    @Column(nullable = false)
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Phone number must contain 10-15 digits")
+    @Column(name = "phone", nullable = false)
     private String phone;
 
-    @NotBlank(message = "Le mot de passe est obligatoire")
-    @Size(min = 9, max = 100, message = "Le mot de passe doit contenir entre 9 et 100 caractères")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*()]).{9,}$",
-            message = "Le mot de passe doit contenir au moins un chiffre, une minuscule, une majuscule et un caractère spécial")
-    @Column(nullable = false)
+    @NotNull(message = "Date of birth is required")
+    @Past(message = "Birth date must be in the past")
+    @Column(name = "birth_date", nullable = false)
+    private Date birthDate;
+
+    @NotBlank(message = "City is required")
+    @Column(name = "city", nullable = false)
+    private String city;
+
+    @NotBlank(message = "Password is required")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @NotNull(message = "Le rôle est obligatoire")
+    @NotNull(message = "Role is required")
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "role", nullable = false)
     private Role role;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Request> requests;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
