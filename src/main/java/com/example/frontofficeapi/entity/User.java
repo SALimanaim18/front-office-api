@@ -20,7 +20,7 @@ import java.util.List;
 @Setter
 @Builder
 @Entity
-@Table(name = "users")
+@Table(name = "USERS")
 @EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
     @Id

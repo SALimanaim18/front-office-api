@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
-@Table(name = "requests")
+@Table(name = "REQUESTS")
 public class Request {
 
     @Id
@@ -27,10 +27,6 @@ public class Request {
     @Column(name = "blood_type", nullable = false)
     private String bloodType;
 
-    @NotBlank(message = "Transfusion center is required")
-    @Column(name = "transfusion_center", nullable = false)
-    private String transfusionCenter;
-
     @NotBlank(message = "City is required")
     @Column(name = "city", nullable = false)
     private String city;
@@ -40,12 +36,17 @@ public class Request {
     private UrgencyLevel urgencyLevel;
 
     @Size(max = 1000)
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Lob
+    @Column(name = "description")
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "donation_center_id", nullable = false)
+    private DonationCenter donationCenter;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

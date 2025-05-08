@@ -19,7 +19,6 @@ import java.util.Arrays;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-    
 
     private final JwtAuthentificationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
@@ -27,15 +26,17 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 👈 Autoriser CORS
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/SangConnect/auth/**").permitAll() // Autoriser routes publiques
+                        .requestMatchers(
+                                "/SangConnect/auth/**",
+                                "/SangConnect/api/demandes",
+                                "/SangConnect/api/demandes/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(sess -> sess
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -45,7 +46,7 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // 👈 Autoriser React
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 

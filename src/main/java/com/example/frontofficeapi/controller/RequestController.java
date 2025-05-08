@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping({"/api/demandes"})
+@RequestMapping({"/SangConnect/api/demandes"})
 
 public class RequestController {
     @Autowired
@@ -50,4 +50,11 @@ public class RequestController {
         this.requestService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/blood-types")
+    public ResponseEntity<List<String>> getAllBloodTypes() {
+        List<String> bloodTypes = List.of("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-");
+        return ResponseEntity.ok(bloodTypes);
+    }
+
 }
