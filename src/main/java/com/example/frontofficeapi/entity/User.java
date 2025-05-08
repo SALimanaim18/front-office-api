@@ -23,6 +23,7 @@ import java.util.List;
 @Table(name = "USERS")
 @EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @SequenceGenerator(name = "user_seq", sequenceName = "USER_SEQ", allocationSize = 1)
@@ -51,9 +52,9 @@ public class User implements UserDetails {
     @Column(name = "birth_date", nullable = false)
     private Date birthDate;
 
-    @NotBlank(message = "City is required")
-    @Column(name = "city", nullable = false)
-    private String city;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "city_id")
+    private City city;
 
     @NotBlank(message = "Password is required")
     @Column(name = "password", nullable = false)

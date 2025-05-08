@@ -2,6 +2,7 @@ package com.example.frontofficeapi.auth;
 
 
 
+import com.example.frontofficeapi.entity.City;
 import lombok.*;
 
 import java.util.Date;
@@ -18,6 +19,6 @@ public class RegistreRequest {
     private String email;
     private Date birthDate;
     private String phone;
-    private String city;
+    private City city;
     private String password;
 }

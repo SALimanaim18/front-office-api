@@ -1,5 +1,6 @@
 package com.example.frontofficeapi.dto;
 
+import com.example.frontofficeapi.entity.City;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -21,7 +22,7 @@ public class DonationCenterDto implements Serializable {
 
     @NotBlank(message = "City is required")
     @Size(min = 2, max = 50, message = "City must be between 2 and 50 characters")
-    private String city;
+    private City city;
 
     @NotBlank(message = "Address is required")
     @Size(min = 5, max = 200, message = "Address must be between 5 and 200 characters")

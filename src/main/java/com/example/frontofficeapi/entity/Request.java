@@ -27,9 +27,9 @@ public class Request {
     @Column(name = "blood_type", nullable = false)
     private String bloodType;
 
-    @NotBlank(message = "City is required")
-    @Column(name = "city", nullable = false)
-    private String city;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "urgency_level", nullable = false)
