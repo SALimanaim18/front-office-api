@@ -1,6 +1,7 @@
 package com.example.frontofficeapi.controller;
 
 import com.example.frontofficeapi.dto.DonationCenterDto;
+import com.example.frontofficeapi.entity.City;
 import com.example.frontofficeapi.service.DonationCenterService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class DonationCenterController {
 
     @GetMapping
     public ResponseEntity<List<DonationCenterDto>> getAll(
-            @RequestParam(required = false) String city,
+            @RequestParam(required = false) City city,
             @RequestParam(required = false) String type
     ) {
         return ResponseEntity.ok(donationCenterService.getAllCenters(city, type));
@@ -49,4 +50,13 @@ public class DonationCenterController {
         donationCenterService.deleteCenter(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/by-city")
+    public ResponseEntity<List<DonationCenterDto>> getByCity(@RequestParam String name) {
+        return ResponseEntity.ok(donationCenterService.getByCity(name));
+    }
+
+
+
+
 }

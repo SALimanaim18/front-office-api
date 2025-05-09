@@ -1,6 +1,7 @@
 package com.example.frontofficeapi.service;
 
 import com.example.frontofficeapi.dto.DonationCenterDto;
+import com.example.frontofficeapi.entity.City;
 import com.example.frontofficeapi.entity.DonationCenter;
 import com.example.frontofficeapi.exception.ResourceNotFoundException;
 import com.example.frontofficeapi.mapper.DonationCenterMapper;
@@ -16,7 +17,7 @@ public class DonationCenterService {
 
     private final DonationCenterRepository donationCenterRepository;
 
-    public List<DonationCenterDto> getAllCenters(String city, String type) {
+    public List<DonationCenterDto> getAllCenters(City city, String type) {
         List<DonationCenter> centers;
 
         if (city != null && type != null) {
@@ -73,4 +74,12 @@ public class DonationCenterService {
 
         donationCenterRepository.deleteById(id);
     }
+
+
+    public List<DonationCenterDto> getByCity(String name) {
+        return donationCenterRepository.findByCity_NameIgnoreCase(name).stream()
+                .map(DonationCenterMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -19,6 +19,6 @@ public class RegistreRequest {
     private String email;
     private Date birthDate;
     private String phone;
-    private City city;
+    private String city;
     private String password;
 }

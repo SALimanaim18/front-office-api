@@ -1,5 +1,6 @@
 package com.example.frontofficeapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,12 +22,11 @@ public class City {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "city")
-    private List<User> users;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "city")
     private List<DonationCenter> donationCenters;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "city")
     private List<Request> requests;
 }

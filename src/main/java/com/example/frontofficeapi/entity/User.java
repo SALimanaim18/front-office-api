@@ -52,9 +52,9 @@ public class User implements UserDetails {
     @Column(name = "birth_date", nullable = false)
     private Date birthDate;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "city_id")
-    private City city;
+    @NotNull(message = "Date of birth is required")
+    @Column(name = "city", nullable = false)
+    private String city;
 
     @NotBlank(message = "Password is required")
     @Column(name = "password", nullable = false)
