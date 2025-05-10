@@ -14,6 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 public class DonationCenterDto implements Serializable {
+
     private Long id;
 
     @NotBlank(message = "Name is required")

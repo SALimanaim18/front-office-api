@@ -1,5 +1,7 @@
 package com.example.frontofficeapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -22,6 +24,8 @@ import java.util.List;
 @Entity
 @Table(name = "USERS")
 @EqualsAndHashCode(of = "id")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class User implements UserDetails {
 
     @Id
@@ -52,8 +56,7 @@ public class User implements UserDetails {
     @Column(name = "birth_date", nullable = false)
     private Date birthDate;
 
-    @NotNull(message = "Date of birth is required")
-    @Column(name = "city", nullable = false)
+    @NotBlank(message = "city is required")
     private String city;
 
     @NotBlank(message = "Password is required")
@@ -73,7 +76,10 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Request> requests;
 
     @Override

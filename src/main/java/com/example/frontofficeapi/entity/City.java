@@ -1,6 +1,7 @@
 package com.example.frontofficeapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "CITIES")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class City {
 
     @Id

@@ -25,20 +25,20 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getRequestURI();
-        return path.startsWith("/SangConnect/auth")
-                || path.startsWith("/SangConnect/api/demandes")
-                || path.startsWith("/SangConnect/api/cities")
-                || path.startsWith("/SangConnect/api/centers");
-    }
-
-    @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+        if (path.startsWith("/auth") ||
+                path.startsWith("/api/cities") ||
+                path.startsWith("/api/centers") ||
+                path.startsWith("/api/demandes")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         final String authHeader = request.getHeader("Authorization");
 

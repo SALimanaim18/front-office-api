@@ -12,7 +12,8 @@ import java.util.Arrays;
 @Configuration
 public class CorsGlobalConfig {
 
-    @Value("${cors.allowed-origin}") // 👈 Correct
+
+    @Value("${cors.allowed-origin}")
     private String allowedOrigin;
 
     @Bean

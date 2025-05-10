@@ -1,5 +1,7 @@
 package com.example.frontofficeapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +15,8 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode(of = "id")
 @Table(name = "DONATION_CENTERS")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class DonationCenter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +39,6 @@ public class DonationCenter {
     private String type;
 
     @OneToMany(mappedBy = "donationCenter", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Request> requests;
 }

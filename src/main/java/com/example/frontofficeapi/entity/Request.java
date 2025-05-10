@@ -1,5 +1,7 @@
 package com.example.frontofficeapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -17,6 +19,8 @@ import java.time.LocalDateTime;
 @Builder
 @EqualsAndHashCode(of = "id")
 @Table(name = "REQUESTS")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class Request {
 
     @Id
@@ -36,7 +40,6 @@ public class Request {
     private UrgencyLevel urgencyLevel;
 
     @Size(max = 1000)
-    @Lob
     @Column(name = "description")
     private String description;
 
@@ -55,4 +58,9 @@ public class Request {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "required_blood_units", nullable = false)
+    private Integer requiredBloodUnits;
+
+
 }
