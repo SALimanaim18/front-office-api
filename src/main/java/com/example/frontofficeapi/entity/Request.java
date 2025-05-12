@@ -61,6 +61,4 @@ public class Request {
 
     @Column(name = "required_blood_units", nullable = false)
     private Integer requiredBloodUnits;
-
-
 }

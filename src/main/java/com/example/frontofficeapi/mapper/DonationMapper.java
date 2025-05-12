@@ -1,13 +1,8 @@
 package com.example.frontofficeapi.mapper;
 
 import com.example.frontofficeapi.dto.DonationDTO;
-import com.example.frontofficeapi.entity.Donation;
-import com.example.frontofficeapi.entity.DonationCenter;
-import com.example.frontofficeapi.entity.Request;
-import com.example.frontofficeapi.entity.User;
-import com.example.frontofficeapi.repository.DonationCenterRepository;
-import com.example.frontofficeapi.repository.RequestRepository;
-import com.example.frontofficeapi.repository.UserRepository;
+import com.example.frontofficeapi.entity.*;
+import com.example.frontofficeapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,32 +15,34 @@ public class DonationMapper {
     private final UserRepository userRepository;
     private final RequestRepository requestRepository;
     private final DonationCenterRepository centerRepository;
+    private final AppointmentRepository appointmentRepository;
 
     @Autowired
-    public DonationMapper(UserRepository userRepository,
-                          RequestRepository requestRepository,
-                          DonationCenterRepository centerRepository) {
+    public DonationMapper(
+            UserRepository userRepository,
+            RequestRepository requestRepository,
+            DonationCenterRepository centerRepository,
+            AppointmentRepository appointmentRepository) {
         this.userRepository = userRepository;
         this.requestRepository = requestRepository;
         this.centerRepository = centerRepository;
+        this.appointmentRepository = appointmentRepository;
     }
 
     public DonationDTO toDTO(Donation donation) {
-        if (donation == null) {
-            return null;
-        }
+        if (donation == null) return null;
 
-        DonationDTO dto = new DonationDTO();
-        dto.setId(donation.getId());
-        dto.setUserId(donation.getUser() != null ? donation.getUser().getId() : null);
-        dto.setRequestId(donation.getRequest() != null ? donation.getRequest().getId() : null);
-        dto.setCenterId(donation.getDonationCenter() != null ? donation.getDonationCenter().getId() : null);
-        dto.setDate(donation.getDate());
-        dto.setBloodType(donation.getBloodType());
-        dto.setVolumeMl(donation.getVolumeMl());
-        dto.setValidated(donation.isValidated());
-
-        return dto;
+        return DonationDTO.builder()
+                .id(donation.getId())
+                .userId(donation.getUser() != null ? donation.getUser().getId() : null)
+                .requestId(donation.getRequest() != null ? donation.getRequest().getId() : null)
+                .centerId(donation.getDonationCenter() != null ? donation.getDonationCenter().getId() : null)
+                .date(donation.getDate())
+                .bloodType(donation.getBloodType())
+                .volumeMl(donation.getVolumeMl())
+                .validated(donation.isValidated())
+                .appointmentId(donation.getAppointment() != null ? donation.getAppointment().getId() : null)
+                .build();
     }
 
     public List<DonationDTO> toDTOList(List<Donation> donations) {
@@ -55,30 +52,29 @@ public class DonationMapper {
     }
 
     public Donation toEntity(DonationDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+        if (dto == null) return null;
 
         Donation donation = new Donation();
         donation.setId(dto.getId());
 
-        // Set relationships based on IDs
         if (dto.getUserId() != null) {
-            User user = userRepository.findById(dto.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found with ID: " + dto.getUserId()));
-            donation.setUser(user);
+            donation.setUser(userRepository.findById(dto.getUserId())
+                    .orElseThrow(() -> new RuntimeException("User not found with ID: " + dto.getUserId())));
         }
 
         if (dto.getRequestId() != null) {
-            Request request = requestRepository.findById(dto.getRequestId())
-                    .orElseThrow(() -> new RuntimeException("Request not found with ID: " + dto.getRequestId()));
-            donation.setRequest(request);
+            donation.setRequest(requestRepository.findById(dto.getRequestId())
+                    .orElseThrow(() -> new RuntimeException("Request not found with ID: " + dto.getRequestId())));
         }
 
         if (dto.getCenterId() != null) {
-            DonationCenter center = centerRepository.findById(dto.getCenterId())
-                    .orElseThrow(() -> new RuntimeException("Donation Center not found with ID: " + dto.getCenterId()));
-            donation.setDonationCenter(center);
+            donation.setDonationCenter(centerRepository.findById(dto.getCenterId())
+                    .orElseThrow(() -> new RuntimeException("Donation Center not found with ID: " + dto.getCenterId())));
+        }
+
+        if (dto.getAppointmentId() != null) {
+            donation.setAppointment(appointmentRepository.findById(dto.getAppointmentId())
+                    .orElseThrow(() -> new RuntimeException("Appointment not found with ID: " + dto.getAppointmentId())));
         }
 
         donation.setDate(dto.getDate());

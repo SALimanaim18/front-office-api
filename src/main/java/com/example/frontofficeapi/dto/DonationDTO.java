@@ -15,10 +15,12 @@ import java.time.LocalDateTime;
 public class DonationDTO implements Serializable {
     private Long id;
     private Long userId;
-    private Long requestId;  // Optional
+    private Long requestId;
     private Long centerId;
     private LocalDateTime date;
     private String bloodType;
+    private Long appointmentId;
+
     private Integer volumeMl;
     private boolean validated;
 }

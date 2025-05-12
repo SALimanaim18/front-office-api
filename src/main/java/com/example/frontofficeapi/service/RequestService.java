@@ -24,12 +24,36 @@ public class RequestService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private NotificationService notificationService;
+
     public RequestService() {
     }
 
     public Request saveDemande(Request request) {
-        return (Request)this.requestRepository.save(request);
+        Request savedRequest = requestRepository.save(request);
+
+        String cityName = savedRequest.getCity().getName();
+        Long demandeurId = savedRequest.getUser().getId();
+
+        List<User> users = userRepository.findByCityIgnoreCaseAndIdNot(cityName, demandeurId);
+
+        String subject = "🩸 Nouvelle demande de sang à " + cityName;
+        String message = "Demande urgente à " + cityName +
+                " pour le groupe " + savedRequest.getBloodType() +
+                ". Centre : " + savedRequest.getDonationCenter().getName();
+
+        for (User user : users) {
+            notificationService.sendNotificationToUser(user.getId(), message);
+            emailService.sendEmail(user.getEmail(), subject, message);
+        }
+
+        return savedRequest;
     }
+
 
     public List<Request> getAll() {
         return requestRepository.findAll();

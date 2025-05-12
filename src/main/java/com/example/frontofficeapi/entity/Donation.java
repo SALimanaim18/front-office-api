@@ -3,6 +3,7 @@ package com.example.frontofficeapi.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,7 +15,6 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of = "id")
 @Table(name = "DONATIONS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
 public class Donation {
 
     @Id
@@ -22,17 +22,21 @@ public class Donation {
     @SequenceGenerator(name = "donation_seq", sequenceName = "DONATION_SEQ", allocationSize = 1)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "request_id")
-    private Request request;  // Optional
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id", nullable = false)
+    private Request request;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "center_id", nullable = false)
     private DonationCenter donationCenter;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "appointment_id", nullable = false)
+    private Appointment appointment;
 
     @Column(name = "donation_date", nullable = false)
     private LocalDateTime date;

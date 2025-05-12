@@ -34,7 +34,9 @@ public class SecurityConfiguration {
                                 "/SangConnect/api/demandes/**",
                                 "/SangConnect/api/demandes",
                                 "/SangConnect/api/cities/**",
-                                "/SangConnect/api/centers/**"
+                                "/SangConnect/api/centers/**",
+                                "/SangConnect/api/appointments/**",
+                                "/SangConnect/api/appointments/center/*/date/*"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

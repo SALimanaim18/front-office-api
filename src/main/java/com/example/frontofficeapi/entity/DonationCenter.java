@@ -16,8 +16,8 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 @Table(name = "DONATION_CENTERS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
 public class DonationCenter {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,4 +41,8 @@ public class DonationCenter {
     @OneToMany(mappedBy = "donationCenter", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Request> requests;
+
+    @OneToMany(mappedBy = "donationCenter", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Appointment> appointments;
 }
