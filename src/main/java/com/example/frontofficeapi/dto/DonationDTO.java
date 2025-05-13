@@ -20,7 +20,6 @@ public class DonationDTO implements Serializable {
     private LocalDateTime date;
     private String bloodType;
     private Long appointmentId;
-
     private Integer volumeMl;
     private boolean validated;
 }

@@ -1,4 +1,3 @@
-
 package com.example.frontofficeapi.service;
 
 import com.example.frontofficeapi.dto.AppointmentDTO;
@@ -38,6 +37,10 @@ public class AppointmentService {
     }
 
     private Appointment convertToEntity(AppointmentDTO dto, User user) {
+        if (dto.getDate() == null || dto.getTime() == null) {
+            throw new IllegalArgumentException("La date et l'heure du rendez-vous sont obligatoires.");
+        }
+
         Appointment appointment = new Appointment();
         appointment.setId(dto.getId());
         appointment.setUser(user);
