@@ -11,5 +11,9 @@ import lombok.*;
 @Setter
 public class AuthentificationResponse {
     private String token;
+    private String role;
+    private Long userId;
+    private Long centerId;
+
 
 }

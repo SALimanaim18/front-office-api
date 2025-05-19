@@ -56,6 +56,11 @@ public class User implements UserDetails {
     @Column(name = "birth_date", nullable = false)
     private Date birthDate;
 
+
+
+    @Column(name = "photo_url")
+    private String photoUrl;
+
     @NotBlank(message = "city is required")
     private String city;
 
@@ -67,6 +72,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+
+
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
@@ -83,12 +91,20 @@ public class User implements UserDetails {
     private List<Request> requests;
 
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "center_id", nullable = true)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private DonationCenter donationCenter;
+
+
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Appointment> appointments;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
@@ -117,4 +133,8 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
+
+
 }

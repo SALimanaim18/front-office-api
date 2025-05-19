@@ -37,7 +37,6 @@ public class DonationMapper {
                 .userId(donation.getUser() != null ? donation.getUser().getId() : null)
                 .requestId(donation.getRequest() != null ? donation.getRequest().getId() : null)
                 .centerId(donation.getDonationCenter() != null ? donation.getDonationCenter().getId() : null)
-                .date(donation.getDate())
                 .bloodType(donation.getBloodType())
                 .volumeMl(donation.getVolumeMl())
                 .validated(donation.isValidated())
@@ -77,7 +76,6 @@ public class DonationMapper {
                     .orElseThrow(() -> new RuntimeException("Appointment not found with ID: " + dto.getAppointmentId())));
         }
 
-        donation.setDate(dto.getDate());
         donation.setBloodType(dto.getBloodType());
         donation.setVolumeMl(dto.getVolumeMl());
         donation.setValidated(dto.isValidated());

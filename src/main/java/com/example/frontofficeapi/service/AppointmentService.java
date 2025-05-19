@@ -65,6 +65,14 @@ public class AppointmentService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
+        LocalDateTime dateTime = LocalDateTime.of(dto.getDate(), dto.getTime());
+
+        // ✅ Vérifier si un rendez-vous existe déjà pour ce créneau
+        boolean alreadyTaken = appointmentRepository.existsByDonationCenterIdAndAppointmentDateTime(dto.getCenterId(), dateTime);
+        if (alreadyTaken) {
+            throw new RuntimeException("Ce créneau est déjà réservé pour ce centre.");
+        }
+
         Appointment appointment = convertToEntity(dto, user);
         Appointment savedAppointment = appointmentRepository.save(appointment);
 
@@ -73,7 +81,6 @@ public class AppointmentService {
                 .user(user)
                 .request(savedAppointment.getRequest())
                 .donationCenter(savedAppointment.getDonationCenter())
-                .date(savedAppointment.getAppointmentDateTime())
                 .bloodType(savedAppointment.getRequest().getBloodType())
                 .volumeMl(450)
                 .validated(false)

@@ -71,8 +71,8 @@ public class DonationController {
     }
 
     @GetMapping("/can-donate/{userId}")
-    public ResponseEntity<Boolean> canUserDonate(@PathVariable Long id) {
-        boolean canDonate = donationService.canUserDonate(id);
+    public ResponseEntity<Boolean> canUserDonate(@PathVariable Long userId) {
+        boolean canDonate = donationService.canUserDonate(userId);
         return ResponseEntity.ok(canDonate);
     }
 }

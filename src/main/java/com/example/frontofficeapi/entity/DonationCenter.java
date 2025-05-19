@@ -45,4 +45,8 @@ public class DonationCenter {
     @OneToMany(mappedBy = "donationCenter", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Appointment> appointments;
+
+    @OneToMany(mappedBy = "donationCenter")
+    @JsonIgnore
+    private List<User> managers;
 }

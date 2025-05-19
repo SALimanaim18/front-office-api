@@ -61,4 +61,9 @@ public class Request {
 
     @Column(name = "required_blood_units", nullable = false)
     private Integer requiredBloodUnits;
+
+
+    @Column(name = "confirmed_by_center_manager", nullable = false)
+    private boolean confirmedByCenterManager = false;
+
 }

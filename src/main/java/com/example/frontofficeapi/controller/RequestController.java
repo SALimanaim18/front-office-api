@@ -19,6 +19,7 @@ import java.util.List;
 @RequestMapping("/SangConnect/api/demandes")
 @RequiredArgsConstructor
 public class RequestController {
+
     private final RequestService requestService;
     private final CityRepository cityRepository;
     private final UserRepository userRepository;
@@ -26,30 +27,13 @@ public class RequestController {
 
     @PostMapping
     public ResponseEntity<Request> create(@RequestBody RequestDto dto) {
-        // 1. Récupérer la ville
         City city = cityRepository.findById(dto.getCityId())
                 .orElseThrow(() -> new IllegalArgumentException("Ville non trouvée"));
-
 
         DonationCenter center = donationCenterRepository.findById(dto.getDonationCenter())
                 .orElseThrow(() -> new IllegalArgumentException("Centre de don non trouvé"));
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email;
-
-        if (authentication == null || authentication.getPrincipal().equals("anonymousUser")) {
-            return ResponseEntity.status(403).build();
-        }
-
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof UserDetails) {
-            email = ((UserDetails) principal).getUsername();
-        } else {
-            email = principal.toString();
-        }
-
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'email : " + email));
+        User user = getCurrentUser();
 
         Request request = Request.builder()
                 .bloodType(dto.getBloodType())
@@ -65,7 +49,7 @@ public class RequestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Request>> getAll() {
+    public ResponseEntity<List<RequestDto>> getAll() {
         return ResponseEntity.ok(requestService.getAll());
     }
 
@@ -82,8 +66,58 @@ public class RequestController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}/confirm")
+    public ResponseEntity<?> confirmRequest(@PathVariable Long id) {
+        User user = getCurrentUser();
+
+        if (user.getRole() != Role.CENTER_MANAGER) {
+            return ResponseEntity.status(403).body("Accès interdit : rôle CENTER_MANAGER requis");
+        }
+
+        Request confirmed = requestService.confirmRequestByCenterManager(id);
+        return ResponseEntity.ok(confirmed);
+    }
+
     @GetMapping("/blood-types")
     public ResponseEntity<List<String>> getAllBloodTypes() {
         return ResponseEntity.ok(List.of("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"));
+    }
+
+    @GetMapping("/center/{centerId}/count")
+    public ResponseEntity<Long> countRequestsByCenter(@PathVariable Long centerId) {
+        return ResponseEntity.ok(requestService.countRequestsByCenter(centerId));
+    }
+
+    @GetMapping("/center/{centerId}/urgent-count")
+    public ResponseEntity<Long> countUrgentRequestsByCenter(@PathVariable Long centerId) {
+        return ResponseEntity.ok(requestService.countUrgentRequestsByCenter(centerId));
+    }
+
+    @GetMapping("/latest")
+    public ResponseEntity<List<RequestDto>> getLatestRequestsByAuthenticatedCenter(Authentication authentication) {
+        User user = userRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        if (user.getRole() != Role.CENTER_MANAGER || user.getDonationCenter() == null) {
+            return ResponseEntity.status(403).body(null);
+        }
+
+        Long centerId = user.getDonationCenter().getId();
+        List<RequestDto> latestRequests = requestService.getLatestRequestsByCenter(centerId);
+        return ResponseEntity.ok(latestRequests);
+    }
+
+    private User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getPrincipal().equals("anonymousUser")) {
+            throw new IllegalStateException("Utilisateur non authentifié");
+        }
+
+        String email = (authentication.getPrincipal() instanceof UserDetails)
+                ? ((UserDetails) authentication.getPrincipal()).getUsername()
+                : authentication.getPrincipal().toString();
+
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'email : " + email));
     }
 }

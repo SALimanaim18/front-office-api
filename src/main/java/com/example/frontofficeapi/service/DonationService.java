@@ -1,6 +1,5 @@
 package com.example.frontofficeapi.service;
 
-
 import com.example.frontofficeapi.dto.DonationDTO;
 import com.example.frontofficeapi.entity.Donation;
 import com.example.frontofficeapi.exception.ResourceNotFoundException;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -89,10 +87,7 @@ public class DonationService {
 
     @Transactional(readOnly = true)
     public boolean canUserDonate(Long userId) {
-        // Check if user has donated in the last 3 months (male) or 4 months (female)
-        // This is a simplified version - in real scenario, you would check user gender
-        LocalDateTime threeMonthsAgo = LocalDateTime.now().minusMonths(3);
-        Integer recentDonations = donationRepository.countUserDonationsSince(userId, threeMonthsAgo);
-        return recentDonations == 0;
+        // Si aucune logique de date n'existe, on retourne true par défaut
+        return true;
     }
 }

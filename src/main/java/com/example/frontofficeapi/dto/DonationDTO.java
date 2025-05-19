@@ -17,7 +17,6 @@ public class DonationDTO implements Serializable {
     private Long userId;
     private Long requestId;
     private Long centerId;
-    private LocalDateTime date;
     private String bloodType;
     private Long appointmentId;
     private Integer volumeMl;

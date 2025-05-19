@@ -18,6 +18,8 @@ public class RequestDto implements Serializable {
     private String urgencyLevel;
     private String description;
     private String userName;
+    private String userPhone;
     private Integer requiredBloodUnits;
     private LocalDateTime createdAt;
+    private boolean confirmedByCenterManager;
 }

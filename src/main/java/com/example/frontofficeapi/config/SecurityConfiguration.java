@@ -30,13 +30,17 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/SangConnect/api/users/upload-photo",
+                                "/uploads/**",
                                 "/SangConnect/auth/**",
                                 "/SangConnect/api/demandes/**",
                                 "/SangConnect/api/demandes",
                                 "/SangConnect/api/cities/**",
                                 "/SangConnect/api/centers/**",
                                 "/SangConnect/api/appointments/**",
-                                "/SangConnect/api/appointments/center/*/date/*"
+                                "/SangConnect/api/appointments/center/*/date/*",
+                                "/SangConnect/api/notifications/**",
+                                "/SangConnect/api/statistics/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

@@ -24,7 +24,7 @@ public class Donation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User user; //donor
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id", nullable = false)
@@ -35,11 +35,9 @@ public class Donation {
     private DonationCenter donationCenter;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "appointment_id", nullable = false)
+    @JoinColumn(name = "appointment_id", nullable = true)
     private Appointment appointment;
 
-    @Column(name = "donation_date", nullable = false)
-    private LocalDateTime date;
 
     @Column(name = "blood_type", nullable = false, length = 10)
     private String bloodType;
@@ -49,4 +47,7 @@ public class Donation {
 
     @Column(nullable = false)
     private boolean validated;
+
+
+
 }
