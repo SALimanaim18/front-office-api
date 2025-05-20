@@ -12,16 +12,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+
 public class SecurityConfiguration {
 
     private final JwtAuthentificationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    @Value("${cors.allowed-origin}")
+    private String allowedOrigins;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -40,7 +44,7 @@ public class SecurityConfiguration {
                                 "/SangConnect/api/appointments/**",
                                 "/SangConnect/api/appointments/center/*/date/*",
                                 "/SangConnect/api/notifications/**",
-                                "/SangConnect/api/statistics/**"
+                                "/SangConnect/api/statistics"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -55,7 +59,7 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOrigins(List.of(allowedOrigins.split(",")));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
@@ -63,4 +67,6 @@ public class SecurityConfiguration {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+
+
 }

@@ -1,8 +1,6 @@
 package com.example.frontofficeapi.auth;
 
-
 import lombok.*;
-
 
 @Builder
 @AllArgsConstructor
@@ -14,6 +12,4 @@ public class AuthentificationResponse {
     private String role;
     private Long userId;
     private Long centerId;
-
-
 }

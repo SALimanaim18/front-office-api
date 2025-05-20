@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.example.frontofficeapi.repository;
 
 import com.example.frontofficeapi.entity.Request;
@@ -22,8 +17,5 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     List<Request> findTop4ByDonationCenterIdOrderByCreatedAtDesc(Long centerId);
 
-
-
-
-
+    List<Request> findByUserId(Long userId);
 }

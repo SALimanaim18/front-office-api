@@ -93,6 +93,12 @@ public class RequestController {
         return ResponseEntity.ok(requestService.countUrgentRequestsByCenter(centerId));
     }
 
+    @GetMapping("/center/{centerId}/latest")
+    public ResponseEntity<List<RequestDto>> getLatestRequestsByCenter(@PathVariable Long centerId) {
+        List<RequestDto> latestRequests = requestService.getLatestRequestsByCenter(centerId);
+        return ResponseEntity.ok(latestRequests);
+    }
+
     @GetMapping("/latest")
     public ResponseEntity<List<RequestDto>> getLatestRequestsByAuthenticatedCenter(Authentication authentication) {
         User user = userRepository.findByEmail(authentication.getName())
@@ -105,6 +111,13 @@ public class RequestController {
         Long centerId = user.getDonationCenter().getId();
         List<RequestDto> latestRequests = requestService.getLatestRequestsByCenter(centerId);
         return ResponseEntity.ok(latestRequests);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<RequestDto>> getUserRequests() {
+        User user = getCurrentUser();
+        List<RequestDto> userRequests = requestService.getRequestsByUser(user.getId());
+        return ResponseEntity.ok(userRequests);
     }
 
     private User getCurrentUser() {
