@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/SangConnect/auth")
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 
 public class AuthentificationController {
@@ -18,9 +19,11 @@ public class AuthentificationController {
     private final AuthenticationService service;
 
     @PostMapping("/register")
+
     public ResponseEntity<AuthentificationResponse> register(
             @RequestBody RegistreRequest request
     ) {
+
         return ResponseEntity.ok(service.register(request));
     }
 
